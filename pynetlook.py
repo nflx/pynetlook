@@ -1,4 +1,40 @@
 #!/usr/bin/env python
+#
+#  Pynetlook collects netstat like data such as known connections and listening ports of processes,
+#   and sends it to Logstash directly or via Redis.
+#
+#  pynetlook copyright (c) 2014 Emil Lind
+#
+#    This file is part of pynetlook.
+#
+#    pynetlook is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    pynetlook is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with pynetlook.  If not, see <http://www.gnu.org/licenses/>.
+#
+#
+# changelog:
+#  x.x.x - initial versions
+#  0.1.0 - first versionized (logstash)
+#  0.1.1 - redis output mode
+#  0.1.2 - yaml config
+#  0.1.3 - daemon mode, builtin scheduler
+#  0.1.4 - windows service capable
+# 
+VERSION="0.1.4"
+
+# todo 0.1.5
+#  handle debug levels to logfile (log info and error but not debug unless debug=true)
+#  make it run on osx
+
 from __future__ import print_function
 import psutil as ps
 from pprint import pprint
@@ -18,25 +54,6 @@ if platform=='win32':
     import win32service
     import win32serviceutil
     import win32event
-
-
-# pynetlook.py (c) 2013 Emil Lind <emil@sys.nu>
-#
-#  Collects netstat alike data such as known connections and listening ports of processes,
-#   and sends it to Logstash directly or via Redis.
-#
-# changelog:
-#  x.x.x - initial versions
-#  0.1.0 - first versionized (logstash)
-#  0.1.1 - redis output mode
-#  0.1.2 - yaml config
-#  0.1.3 - daemon mode, builtin scheduler
-#  0.1.4 - windows service capable
-# 
-VERSION="0.1.4"
-
-#todo 0.1.5
-# handle debug levels to logfile (log info and error but not debug unless debug=true)
 
 
 CONFFILE=splitext(abspath(__file__))[0]+'.yaml' # Conffile is pynetlook.yaml
@@ -95,7 +112,7 @@ if not platform=='win32':
     if len(argv)>1:
         plogger.info("- pynetlook.py %s (c) 2013 Emil Lind <emil@emillind.se> - www.emillind.se\n"
               "\n"
-              " Collects netstat alike data such as known connections and listening ports of processes,\n"
+              " Collects netstat like data such as known connections and listening ports of processes,\n"
               "  and sends it to Logstash directly or via Redis.\n"
               "\n"
               "  syntax: ./pynetlook.py [-d|-v]\n"
@@ -265,7 +282,7 @@ if platform=='win32':
         # Control Manager (SCM)
         _svc_display_name_ = "Pynetlook %s" % VERSION
         # this text shows up as the description in the SCM
-        _svc_description_ = "Collects netstat alike data such as known connections and listening ports of processesand sends it to Logstash directly or via Redis. Pynetlook (c) 2013 Emil Lind <emil@emillind.se> - www.emillind.se"
+        _svc_description_ = "Collects netstat like data such as known connections and listening ports of processesand sends it to Logstash directly or via Redis. Pynetlook (c) 2013 Emil Lind <emil@emillind.se> - www.emillind.se"
         
         def __init__(self, args):
             win32serviceutil.ServiceFramework.__init__(self,args)

@@ -2,7 +2,7 @@ pynetlook
 =========
 
 # WHAT
-  A service that collects netstat alike data such as known connections and listening ports of processes,
+  A service that collects netstat like data such as known connections and listening ports of processes,
   and sends it to Logstash. Either directly or via Redis.
 
   Runs on Windows and Linux.
